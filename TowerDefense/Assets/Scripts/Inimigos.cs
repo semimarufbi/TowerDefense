@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class Inimigos : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("atributos")]
+    [SerializeField] private float moveSpeed = 2f;
+
+    [Header("Referencias")]
+    [SerializeField] private Rigidbody2D rb;
+
+    private Transform alvo;
+
+    private int pathIndex = 0;
+
+
+    private void Start()
+    {
+        alvo = LevelManager.main.path[0];
+    }
+    private void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
