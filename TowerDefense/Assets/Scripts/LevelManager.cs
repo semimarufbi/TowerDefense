@@ -8,5 +8,10 @@ public class LevelManager : MonoBehaviour
     public Transform[] path;
     public Transform startPoint;
 
-    
+    private void Awake()
+    {
+        main = this;
+    }
+
+
 }

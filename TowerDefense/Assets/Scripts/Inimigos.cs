@@ -17,20 +17,31 @@ public class Inimigos : MonoBehaviour
 
     private void Start()
     {
-        alvo = LevelManager.main.path[0];
+        alvo = LevelManager.main.path[pathIndex];
     }
     private void Update()
     {
-        if (Vector2.Distance(alvo.position,transform.position) <= 0.1f)
+        if (Vector2.Distance(alvo.position, transform.position) <= 0.1f)
         {
+
             pathIndex++;
-            if(pathIndex == LevelManager.main.path.Length)
+
+            if (pathIndex == LevelManager.main.path.Length)
             {
                 Destroy(gameObject);
                 return;
             }
+            else
+            {
+                alvo = LevelManager.main.path[pathIndex];
+            }
         }
     }
-
+    private void FixedUpdate()
+    {
+        Vector2 direcao = (alvo.position - transform.position).normalized;
+        
+        rb.velocity = direcao * moveSpeed;
+    }
 
 }
