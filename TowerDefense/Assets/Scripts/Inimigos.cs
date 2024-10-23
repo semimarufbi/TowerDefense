@@ -21,7 +21,15 @@ public class Inimigos : MonoBehaviour
     }
     private void Update()
     {
-        
+        if (Vector2.Distance(alvo.position,transform.position) <= 0.1f)
+        {
+            pathIndex++;
+            if(pathIndex == LevelManager.main.path.Length)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
     }
 
 
