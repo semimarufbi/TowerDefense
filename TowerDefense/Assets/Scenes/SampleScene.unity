@@ -1067,7 +1067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inimigoBase: 8
-  inimigosPorSeg: 0.5
+  inimigosPorSeg: 1
   tempoEntreOrdas: 0
   dificuldade: 0.75
   prefabInimigo:
