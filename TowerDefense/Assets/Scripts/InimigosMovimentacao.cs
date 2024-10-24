@@ -5,7 +5,7 @@ using UnityEngine;
 public class InimigosMovimentacao : MonoBehaviour
 {
     [Header("atributos")]
-    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float moveSpeed = 100f;
 
     [Header("Referencias")]
     [SerializeField] private Rigidbody2D rb;
@@ -28,6 +28,7 @@ public class InimigosMovimentacao : MonoBehaviour
 
             if (pathIndex == LevelManager.main.path.Length)
             {
+                EnemySpwaner.onEnemyDestroy.Invoke();
                 Destroy(gameObject);
                 return;
             }

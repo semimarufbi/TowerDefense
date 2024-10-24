@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemySpwaner : MonoBehaviour
 {
@@ -19,11 +20,17 @@ public class EnemySpwaner : MonoBehaviour
     private int inimigoVivo;
     private int inimigosSaiuDoSpawn;
     private bool estaSpawnando = false;
+    public static UnityEvent onEnemyDestroy = new UnityEvent();
+
+    private void Awake()
+    {
+        onEnemyDestroy.AddListener(EnemyDestroyed);
+    }
 
 
     private void Start()
     {
-        StartWave();
+        StartCoroutine(StartWave());
     }
     private void Update()
     { if (!estaSpawnando) return;
@@ -36,10 +43,28 @@ public class EnemySpwaner : MonoBehaviour
             tempodepoisdospawn = 0f;
             
         }
+        if (inimigoVivo == 0 && inimigosSaiuDoSpawn == 0)
+        {
+            TerminarOrda();
+        }
+    }
+
+    private void EnemyDestroyed()
+    {
+        inimigoVivo--;
+
+    } 
+    
+    private void TerminarOrda()
+    {
+        estaSpawnando = false;
+        tempodepoisdospawn = 0f;
+        StartCoroutine(StartWave());
     }
     // Start is called before the first frame update
-    void StartWave()
+    private IEnumerator StartWave()
     {
+        yield return new WaitForSeconds(tempoEntreOrdas);
       estaSpawnando = true;
         inimigosSaiuDoSpawn = InimigoPorOrda();
     }
