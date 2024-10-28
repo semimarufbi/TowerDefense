@@ -1,7 +1,7 @@
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class InimigoVeloz : InimigosMovimentacao
+public class InimigoVeloz : inimigoBase
 {
     [Header("Atributos Específicos do Inimigo Veloz")]
     [SerializeField] private float aumentoDeVelocidade = 1.05f;

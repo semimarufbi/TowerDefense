@@ -70,17 +70,9 @@ public class EnemySpawner : MonoBehaviour
         estaSpawnando = false;
         tempodepoisdospawn = 0f; // Reseta o tempo desde o último spawn
         ordaAtual++; // Incrementa o contador de ondas
-
-        // Verifica se o número máximo de ondas foi atingido
-        if (ordaAtual <= maxOrdas)
-        {
-            StartCoroutine(StartWave()); // Inicia a próxima onda
-        }
-        else
-        {
-            Debug.Log("Número máximo de ordas atingido. Não haverá mais inimigos.");
-            // Aqui pode-se adicionar a lógica para o final do jogo ou transição para outra fase
-        }
+        StartCoroutine(StartWave()); // Inicia a próxima onda
+        
+       
     }
 
     private IEnumerator StartWave()

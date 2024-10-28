@@ -1,11 +1,12 @@
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class InimigoRajada :InimigosMovimentacao
+public class InimigoRajada :inimigoBase
 {
     [Header("Atributos Específicos de Rajada")]
     [SerializeField] private float duracaoRajada = 1f; // Duração da rajada em segundos
     [SerializeField] private float intervaloRajada = 2f; // Intervalo entre as rajadas
+    [SerializeField] protected int vida = 200; // Vida inicial do inimigo
 
     private float tempoRajadaAtual = 0f;
     private bool emRajada = true;
@@ -56,4 +57,17 @@ public class InimigoRajada :InimigosMovimentacao
             alvo = LevelManager.main.path[pathIndex];
         }
     }
+
+    public override void  ReceberDano(int dano)
+    {
+        vida = 200;
+        vida -= dano;
+        if (vida <= 0)
+        {
+            OnMorte();
+        }
+
+    }
+    
+    
 }
