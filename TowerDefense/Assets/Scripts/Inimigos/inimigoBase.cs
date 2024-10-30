@@ -7,6 +7,7 @@ public class inimigoBase : MonoBehaviour , IReceberDano
     [Header("Atributos")]
     [SerializeField] protected float moveSpeed = 100f; // Velocidade de movimento do inimigo
     // Vida inicial do inimigo
+    public  int vida;
 
     [Header("Referências")]
     [SerializeField] protected Rigidbody2D rb; // Referência ao componente Rigidbody2D para controle de física
@@ -17,7 +18,7 @@ public class inimigoBase : MonoBehaviour , IReceberDano
     // Reduz a vida do inimigo quando ele recebe dano e verifica se ele morreu
     public virtual void ReceberDano(int dano)
     {
-        int vida = 100;
+        
         vida -= dano; // Reduz a vida do inimigo pelo dano recebido
         
         // Se a vida for menor ou igual a zero, chama o método OnMorte
