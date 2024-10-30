@@ -41,7 +41,8 @@ public class Torre : MonoBehaviour
     }
     private void Shoot()
     {
-        Debug.Log("shoot");
+        GameObject bulletobj = Instantiate(bulletPrefab,pontoDeTiro.position,Quaternion.identity) ;
+        bullet bulletScript = bulletobj.GetComponent<Bullet>
     }
 
     private void FindTarget()

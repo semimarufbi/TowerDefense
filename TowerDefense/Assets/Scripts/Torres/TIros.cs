@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class TIros : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Transform target;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float bulletspeed = 5f;
+
+    public void SetTarget(Transform _target)
     {
-        
+        target = _target;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        Vector2 direction = (transform.position - target.position).normalized;
+        rb.velocity = direction * bulletspeed;
     }
 }
