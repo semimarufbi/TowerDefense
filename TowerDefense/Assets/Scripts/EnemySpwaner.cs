@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float inimigosPorSeg = 0.5f; // Quantidade de inimigos gerados por segundo
     [SerializeField] private float tempoEntreOrdas = 5f; // Intervalo de tempo entre cada onda
     [SerializeField] private float dificuldade = 0.75f; // Fator de dificuldade que aumenta o número de inimigos a cada onda
-    [SerializeField] private int maxOrdas = 10; // Número máximo de ondas que serão spawnadas
+     // Número máximo de ondas que serão spawnadas
 
     [Header("Referências")]
     [SerializeField] private GameObject[] prefabInimigo; // Array de prefabs dos inimigos para spawnar
