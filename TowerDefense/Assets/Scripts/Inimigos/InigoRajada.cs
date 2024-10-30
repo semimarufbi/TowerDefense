@@ -60,8 +60,7 @@ public class InimigoRajada :inimigoBase
 
     public override void  ReceberDano(int dano)
     {
-        vida = 200;
-        vida -= dano;
+         vida -= dano;
         if (vida <= 0)
         {
             OnMorte();
