@@ -6,8 +6,7 @@ public class InimigoRajada :inimigoBase
     [Header("Atributos Específicos de Rajada")]
     [SerializeField] private float duracaoRajada = 1f; // Duração da rajada em segundos
     [SerializeField] private float intervaloRajada = 2f; // Intervalo entre as rajadas
-    [SerializeField] protected int vida = 200; // Vida inicial do inimigo
-
+  
     private float tempoRajadaAtual = 0f;
     private bool emRajada = true;
 
