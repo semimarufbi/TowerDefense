@@ -1088,7 +1088,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6318a348317018446bf2374a0ef17317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerPrefabs: []
+
+  towerPrefabs:
+  - {fileID: 1802898080121011864, guid: 7613ca3a98cff684a8c4d77a753a38ce, type: 3}
+
 --- !u!1001 &277031060
 PrefabInstance:
   m_ObjectHideFlags: 0
