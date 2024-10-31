@@ -31,9 +31,9 @@ public class Bloco : MonoBehaviour
     {
         if (tower != null) return;
 
-        GameObject towerToBuild = BuildManager.Instance.GetSelectedTower();
+        Tower towerToBuild = BuildManager.Instance.GetSelectedTower();
 
         // Instanciando a torre corretamente
-        tower = Instantiate(towerToBuild, transform.position, Quaternion.identity); // Atribuindo a torre ao campo 'tower'
+        tower = Instantiate(towerToBuild.prefab, transform.position, Quaternion.identity); // Atribuindo a torre ao campo 'tower'
     }
 }

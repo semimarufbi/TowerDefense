@@ -20,7 +20,7 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     public virtual void ReceberDano(int dano)
     {
         vidaAtual -= dano;
-        LevelManager.main.IncreaseCurerency(currentWorth);
+       
         if (vidaAtual <= 0)
         {
             OnMorte();
@@ -68,5 +68,6 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     {
         EnemySpawner.onEnemyDestroy.Invoke();
         Destroy(gameObject);
+        LevelManager.main.IncreaseCurerency(currentWorth);
     }
 }

@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float dificuldade = 0.75f; // Fator de dificuldade que aumenta o número de inimigos a cada onda
 
     [Header("Referências")]
-    [SerializeField] private GameObject[] prefabInimigo; // Array de prefabs dos inimigos para spawnar
+    [SerializeField] private List<GameObject> prefabInimigo = new List<GameObject>(); // Lista de prefabs dos inimigos para spawnar
 
     private int ordaAtual = 1; // Contador da onda atual
     private float tempodepoisdospawn; // Tempo acumulado desde o último spawn de inimigo
@@ -80,7 +80,15 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnarInimigo()
     {
-        GameObject prefabParaSpawnar = prefabInimigo[Random.Range(0, prefabInimigo.Length)];
+        // Verifica se a lista de prefabs não está vazia
+        if (prefabInimigo.Count == 0)
+        {
+            Debug.LogWarning("A lista de prefabs de inimigos está vazia!");
+            return;
+        }
+
+        // Seleciona um prefab aleatório da lista
+        GameObject prefabParaSpawnar = prefabInimigo[Random.Range(0, prefabInimigo.Count)];
         Instantiate(prefabParaSpawnar, LevelManager.main.startPoint.position, Quaternion.identity);
     }
 }
