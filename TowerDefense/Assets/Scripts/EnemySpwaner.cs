@@ -6,46 +6,48 @@ using UnityEngine.Events;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Atributos")]
-    [SerializeField] private int inimigoBase = 8; // Base de inimigos por onda
-    [SerializeField] private float inimigosPorSeg = 0.5f; // Quantidade de inimigos por segundo
-    [SerializeField] private float tempoEntreOrdas = 5f; // Tempo entre ordas
-    [SerializeField] private float dificuldade = 0.75f; // Dificuldade que aumenta o número de inimigos
-    [SerializeField] private int maxOrdas = 10; // Número máximo de ordas a serem spawnadas
+    [SerializeField] private int inimigoBase = 8; // Quantidade base de inimigos por onda
+    [SerializeField] private float inimigosPorSeg = 0.5f; // Quantidade de inimigos gerados por segundo
+    [SerializeField] private float tempoEntreOrdas = 5f; // Intervalo de tempo entre cada onda
+    [SerializeField] private float dificuldade = 0.75f; // Fator de dificuldade que aumenta o número de inimigos a cada onda
 
     [Header("Referências")]
-    [SerializeField] private GameObject[] prefabInimigo; // Prefabs dos inimigos
+    [SerializeField] private GameObject[] prefabInimigo; // Array de prefabs dos inimigos para spawnar
 
-    private int ordaAtual = 1; // Contador de ordas atual
-    private float tempodepoisdospawn; // Tempo após o último spawn
-    private int inimigoVivo; // Contador de inimigos vivos
-    private int inimigosSaiuDoSpawn; // Contador de inimigos que foram spawnados
-    private bool estaSpawnando = false; // Estado do spawn
-    public static UnityEvent onEnemyDestroy = new UnityEvent();
+    private int ordaAtual = 1; // Contador da onda atual
+    private float tempodepoisdospawn; // Tempo acumulado desde o último spawn de inimigo
+    private int inimigoVivo; // Contador de inimigos vivos no momento
+    private int inimigosSaiuDoSpawn; // Contador de inimigos a serem spawnados na onda atual
+    private bool estaSpawnando = false; // Indica se a onda atual está spawnando inimigos
+    public static UnityEvent onEnemyDestroy = new UnityEvent(); // Evento estático chamado quando um inimigo é destruído
 
     private void Awake()
     {
-        onEnemyDestroy.AddListener(EnemyDestroyed);
+        onEnemyDestroy.AddListener(EnemyDestroyed); // Assina o evento de destruição de inimigo
     }
 
     private void Start()
     {
-        StartCoroutine(StartWave());
+        StartCoroutine(StartWave()); // Inicia a primeira onda
     }
 
     private void Update()
     {
-        if (!estaSpawnando) return;
+        if (!estaSpawnando) return; // Se não está spawnando, não faz nada
 
         tempodepoisdospawn += Time.deltaTime;
+
+        // Verifica se é hora de spawnar um inimigo
         if (tempodepoisdospawn >= (1f / inimigosPorSeg) && inimigosSaiuDoSpawn > 0)
         {
             SpawnarInimigo();
             inimigosSaiuDoSpawn--;
-            inimigoVivo++;
+            inimigoVivo++; // Incrementa o contador de inimigos vivos
             tempodepoisdospawn = 0f;
         }
 
-        if (inimigoVivo == 0 && inimigosSaiuDoSpawn == 0)
+        // Inicia a próxima onda se todos os inimigos da onda atual foram derrotados
+        if (inimigoVivo <= 0 && inimigosSaiuDoSpawn <= 0)
         {
             TerminarOrda();
         }
@@ -53,37 +55,27 @@ public class EnemySpawner : MonoBehaviour
 
     private void EnemyDestroyed()
     {
-        inimigoVivo--;
+        inimigoVivo--; // Reduz o contador de inimigos vivos quando um inimigo é destruído
     }
 
     private void TerminarOrda()
     {
-        estaSpawnando = false;
+        estaSpawnando = false; // Para o spawn da onda atual
         tempodepoisdospawn = 0f;
-        ordaAtual++;
-
-        // Verifica se o número máximo de ordas foi atingido
-        if (ordaAtual <= maxOrdas)
-        {
-            StartCoroutine(StartWave());
-        }
-        else
-        {
-            Debug.Log("Número máximo de ordas atingido. Não haverá mais inimigos.");
-            // Aqui você pode adicionar a lógica de final de jogo ou transição para a próxima fase
-        }
+        ordaAtual++; // Incrementa a contagem de ondas
+        StartCoroutine(StartWave()); // Inicia uma nova onda
     }
 
     private IEnumerator StartWave()
     {
         yield return new WaitForSeconds(tempoEntreOrdas);
-        estaSpawnando = true;
-        inimigosSaiuDoSpawn = InimigoPorOrda();
+        estaSpawnando = true; // Define que a nova onda está em processo de spawn
+        inimigosSaiuDoSpawn = InimigoPorOrda(); // Calcula a quantidade de inimigos na nova onda
     }
 
     private int InimigoPorOrda()
     {
-        return Mathf.RoundToInt(inimigoBase * Mathf.Pow(ordaAtual, dificuldade));
+        return Mathf.RoundToInt(inimigoBase * Mathf.Pow(ordaAtual, dificuldade)); // Calcula a quantidade de inimigos com base na dificuldade e na onda
     }
 
     private void SpawnarInimigo()

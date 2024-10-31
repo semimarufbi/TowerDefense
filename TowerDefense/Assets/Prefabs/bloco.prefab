@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8350269921311933559}
   - component: {fileID: 8182194506758137067}
   - component: {fileID: 7028917228457755712}
+  - component: {fileID: -604654984309956985}
   m_Layer: 0
   m_Name: bloco
   m_TagString: Untagged
@@ -130,3 +131,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-604654984309956985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626557687464420244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3d86ae088fa124f9c5f62aca2b04df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sr: {fileID: 8182194506758137067}
+  houverColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0.2509804}

@@ -2,28 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InimigosMovimentacao : MonoBehaviour
+public class inimigoBase : MonoBehaviour, IReceberDano
 {
     [Header("Atributos")]
-    [SerializeField] protected float moveSpeed = 100f;
+    [SerializeField] protected float moveSpeed = 100f; // Velocidade de movimento do inimigo
+    [SerializeField] private int currentWorth = 50;
 
     [Header("Referências")]
-    [SerializeField] protected Rigidbody2D rb;
+    [SerializeField] protected Rigidbody2D rb; // Referência ao componente Rigidbody2D para controle de física
 
-    protected Transform alvo;
-    protected int pathIndex = 0;
-    [Header("Atributos")]
-   
-    [SerializeField] protected int vida = 100; // Adicionando vida ao inimigo
+    protected Transform alvo; // Posição do alvo atual no caminho
+    protected int pathIndex = 0; // Índice do ponto atual no caminho
 
-    // ... (restante do código)
+    [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo, usada somente no método `ReceberDano`
 
-    public void ReceberDano(int dano)
+    // Método de interface que reduz a vida e verifica se o inimigo morreu
+    public virtual void ReceberDano(int dano)
     {
-        vida -= dano; // Reduz a vida do inimigo pelo dano recebido
-        Debug.Log($"Inimigo recebeu {dano} de dano! Vida restante: {vida}");
-
-        if (vida <= 0)
+        vidaAtual -= dano;
+        LevelManager.main.IncreaseCurerency(currentWorth);
+        if (vidaAtual <= 0)
         {
             OnMorte();
         }
@@ -31,7 +29,7 @@ public class InimigosMovimentacao : MonoBehaviour
 
     protected virtual void Start()
     {
-        alvo = LevelManager.main.path[pathIndex];
+        alvo = LevelManager.main.path[pathIndex]; // Ponto inicial do caminho
     }
 
     protected virtual void Update()
@@ -53,7 +51,7 @@ public class InimigosMovimentacao : MonoBehaviour
         rb.velocity = direcao * moveSpeed;
     }
 
-    protected  virtual void AtualizarDestino()
+    protected virtual void AtualizarDestino()
     {
         pathIndex++;
         if (pathIndex >= LevelManager.main.path.Length)
@@ -72,5 +70,3 @@ public class InimigosMovimentacao : MonoBehaviour
         Destroy(gameObject);
     }
 }
-
-

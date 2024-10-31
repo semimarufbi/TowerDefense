@@ -1,7 +1,6 @@
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class InimigoRajada :InimigosMovimentacao
+public class InimigoRajada : inimigoBase
 {
     [Header("Atributos Específicos de Rajada")]
     [SerializeField] private float duracaoRajada = 1f; // Duração da rajada em segundos
@@ -9,6 +8,13 @@ public class InimigoRajada :InimigosMovimentacao
 
     private float tempoRajadaAtual = 0f;
     private bool emRajada = true;
+
+    // Atributo de vida específico para este inimigo
+    protected override void Start()
+    {
+        base.Start();
+        vidaAtual = 70; // Defina a vida inicial específica para este inimigo
+    }
 
     protected override void Update()
     {
@@ -55,5 +61,10 @@ public class InimigoRajada :InimigosMovimentacao
         {
             alvo = LevelManager.main.path[pathIndex];
         }
+    }
+
+    public override void ReceberDano(int dano)
+    {
+        base.ReceberDano(dano); // Chama o método da classe base
     }
 }
