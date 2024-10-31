@@ -27,6 +27,11 @@ public class TIros : MonoBehaviour
         rb.velocity = direction * bulletSpeed;
     }
 
+    public void SetDirection(Vector2 direction)
+    {
+        rb.velocity = direction * bulletSpeed;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (jaAplicouDano) return; // Sai da função se o dano já foi aplicado

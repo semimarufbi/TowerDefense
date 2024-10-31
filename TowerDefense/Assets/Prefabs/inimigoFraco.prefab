@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5770367090226353288}
   - component: {fileID: 608718314369120716}
   m_Layer: 6
-  m_Name: archer
+  m_Name: inimigoFraco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,4 +165,3 @@ MonoBehaviour:
   currentWorth: 10
   rb: {fileID: 6534120638041609728}
   vidaAtual: 10
-  resistencia: 0.5

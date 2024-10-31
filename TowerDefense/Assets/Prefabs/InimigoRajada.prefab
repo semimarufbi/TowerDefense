@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4754389680228355578}
   - component: {fileID: 8724475544745250934}
   m_Layer: 6
-  m_Name: UFO(7)
+  m_Name: InimigoRajada
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  currentWorth: 50
   rb: {fileID: 4754389680228355578}
   vidaAtual: 70
   duracaoRajada: 1
