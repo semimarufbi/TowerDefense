@@ -35,19 +35,25 @@ public class Torre : MonoBehaviour
         if (!CheckTargetISInRAnge())
         {
             target = null;
-        }else
+        }
+        else
         {
             timeUntilFire += Time.deltaTime;
-            if(timeUntilFire >= 1f / bps)
+            if (timeUntilFire >= 1f / bps)
             {
                 Shoot();
+                timeUntilFire = 0f; // Zera o tempo para a próxima bala
             }
         }
     }
 
+
     private void Shoot()
     {
-        Debug.Log("shoot");
+        GameObject bulletObj = Instantiate(bulletPrefab,firingPoint.position,Quaternion.identity);
+       TIros bulletScript = bulletObj.GetComponent<TIros>();
+        bulletScript.SetTarget(target);
+            
     }
      private void FindTarget()
     {
