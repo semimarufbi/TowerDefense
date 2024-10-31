@@ -6,7 +6,7 @@ public class inimigoBase : MonoBehaviour, IReceberDano
 {
     [Header("Atributos")]
     [SerializeField] protected float moveSpeed = 100f; // Velocidade de movimento do inimigo
-    [SerializeField] private int currentWorth = 50;
+    [SerializeField] private int currentWorth = 50; // Quantidade de moeda que este inimigo vale
 
     [Header("Referências")]
     [SerializeField] protected Rigidbody2D rb; // Referência ao componente Rigidbody2D para controle de física
@@ -14,16 +14,17 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     protected Transform alvo; // Posição do alvo atual no caminho
     protected int pathIndex = 0; // Índice do ponto atual no caminho
 
-    [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo, usada somente no método `ReceberDano`
+    [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo
 
     // Método de interface que reduz a vida e verifica se o inimigo morreu
     public virtual void ReceberDano(int dano)
     {
-        vidaAtual -= dano;
-        LevelManager.main.IncreaseCurerency(currentWorth);
+        vidaAtual -= dano; // Reduz a vida do inimigo pelo dano recebido
+
+        // Verifica se a vida do inimigo chegou a zero ou menos
         if (vidaAtual <= 0)
         {
-            OnMorte();
+            OnMorte(); // Chama o método de morte se a vida for igual ou menor que zero
         }
     }
 
@@ -56,17 +57,18 @@ public class inimigoBase : MonoBehaviour, IReceberDano
         pathIndex++;
         if (pathIndex >= LevelManager.main.path.Length)
         {
-            OnMorte();
+            OnMorte(); // Chama o método de morte se o inimigo atingir o final do caminho
         }
         else
         {
-            alvo = LevelManager.main.path[pathIndex];
+            alvo = LevelManager.main.path[pathIndex]; // Atualiza o alvo para o próximo ponto
         }
     }
 
     public virtual void OnMorte()
     {
-        EnemySpawner.onEnemyDestroy.Invoke();
-        Destroy(gameObject);
+        LevelManager.main.IncreaseCurerency(currentWorth); // Aumenta a moeda ao morrer
+        EnemySpawner.onEnemyDestroy.Invoke(); // Invoca o evento de inimigo destruído
+        Destroy(gameObject); // Destrói o objeto inimigo
     }
 }
