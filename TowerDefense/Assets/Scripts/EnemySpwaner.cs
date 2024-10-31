@@ -10,7 +10,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float inimigosPorSeg = 0.5f; // Quantidade de inimigos gerados por segundo
     [SerializeField] private float tempoEntreOrdas = 5f; // Intervalo de tempo entre cada onda
     [SerializeField] private float dificuldade = 0.75f; // Fator de dificuldade que aumenta o número de inimigos a cada onda
-     // Número máximo de ondas que serão spawnadas
 
     [Header("Referências")]
     [SerializeField] private GameObject[] prefabInimigo; // Array de prefabs dos inimigos para spawnar
@@ -24,74 +23,63 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        // Adiciona o método EnemyDestroyed ao evento onEnemyDestroy, para reduzir o contador de inimigos vivos quando um inimigo é destruído
-        onEnemyDestroy.AddListener(EnemyDestroyed);
+        onEnemyDestroy.AddListener(EnemyDestroyed); // Assina o evento de destruição de inimigo
     }
 
     private void Start()
     {
-        // Inicia a primeira onda assim que o jogo começa
-        StartCoroutine(StartWave());
+        StartCoroutine(StartWave()); // Inicia a primeira onda
     }
 
     private void Update()
     {
-        // Se não estiver spawnando inimigos, não realiza nenhuma ação
-        if (!estaSpawnando) return;
+        if (!estaSpawnando) return; // Se não está spawnando, não faz nada
 
-        // Atualiza o tempo desde o último spawn de inimigo
         tempodepoisdospawn += Time.deltaTime;
 
         // Verifica se é hora de spawnar um inimigo
         if (tempodepoisdospawn >= (1f / inimigosPorSeg) && inimigosSaiuDoSpawn > 0)
         {
-            SpawnarInimigo(); // Cria um novo inimigo
-            inimigosSaiuDoSpawn--; // Diminui o contador de inimigos a serem spawnados
+            SpawnarInimigo();
+            inimigosSaiuDoSpawn--;
             inimigoVivo++; // Incrementa o contador de inimigos vivos
-            tempodepoisdospawn = 0f; // Reseta o tempo desde o último spawn
+            tempodepoisdospawn = 0f;
         }
 
-        // Verifica se todos os inimigos da onda foram derrotados
-        if (inimigoVivo == 0 && inimigosSaiuDoSpawn == 0)
+        // Inicia a próxima onda se todos os inimigos da onda atual foram derrotados
+        if (inimigoVivo <= 0 && inimigosSaiuDoSpawn <= 0)
         {
-            TerminarOrda(); // Finaliza a onda atual e prepara a próxima
+            TerminarOrda();
         }
     }
 
     private void EnemyDestroyed()
     {
-        // Decrementa o contador de inimigos vivos ao ser chamado pelo evento de destruição do inimigo
-        inimigoVivo--;
+        inimigoVivo--; // Reduz o contador de inimigos vivos quando um inimigo é destruído
     }
 
     private void TerminarOrda()
     {
-        // Para o spawn de inimigos e prepara a próxima onda
-        estaSpawnando = false;
-        tempodepoisdospawn = 0f; // Reseta o tempo desde o último spawn
-        ordaAtual++; // Incrementa o contador de ondas
-        StartCoroutine(StartWave()); // Inicia a próxima onda
-        
-       
+        estaSpawnando = false; // Para o spawn da onda atual
+        tempodepoisdospawn = 0f;
+        ordaAtual++; // Incrementa a contagem de ondas
+        StartCoroutine(StartWave()); // Inicia uma nova onda
     }
 
     private IEnumerator StartWave()
     {
-        // Espera pelo intervalo entre ondas e então inicia a geração de inimigos
         yield return new WaitForSeconds(tempoEntreOrdas);
-        estaSpawnando = true; // Define que a onda está em processo de spawn
-        inimigosSaiuDoSpawn = InimigoPorOrda(); // Define o número de inimigos a serem spawnados na onda atual
+        estaSpawnando = true; // Define que a nova onda está em processo de spawn
+        inimigosSaiuDoSpawn = InimigoPorOrda(); // Calcula a quantidade de inimigos na nova onda
     }
 
     private int InimigoPorOrda()
     {
-        // Calcula a quantidade de inimigos da onda com base na dificuldade e na onda atual
-        return Mathf.RoundToInt(inimigoBase * Mathf.Pow(ordaAtual, dificuldade));
+        return Mathf.RoundToInt(inimigoBase * Mathf.Pow(ordaAtual, dificuldade)); // Calcula a quantidade de inimigos com base na dificuldade e na onda
     }
 
     private void SpawnarInimigo()
     {
-        // Escolhe um prefab de inimigo aleatório e o spawn no ponto inicial do LevelManager
         GameObject prefabParaSpawnar = prefabInimigo[Random.Range(0, prefabInimigo.Length)];
         Instantiate(prefabParaSpawnar, LevelManager.main.startPoint.position, Quaternion.identity);
     }
