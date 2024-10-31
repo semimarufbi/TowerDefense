@@ -6,6 +6,7 @@ public class inimigoBase : MonoBehaviour, IReceberDano
 {
     [Header("Atributos")]
     [SerializeField] protected float moveSpeed = 100f; // Velocidade de movimento do inimigo
+    [SerializeField] private int currentWorth = 50;
 
     [Header("Referências")]
     [SerializeField] protected Rigidbody2D rb; // Referência ao componente Rigidbody2D para controle de física
@@ -19,7 +20,7 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     public virtual void ReceberDano(int dano)
     {
         vidaAtual -= dano;
-
+        LevelManager.main.IncreaseCurerency(currentWorth);
         if (vidaAtual <= 0)
         {
             OnMorte();
