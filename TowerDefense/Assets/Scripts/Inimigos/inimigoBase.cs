@@ -13,14 +13,13 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     protected Transform alvo; // Posição do alvo atual no caminho
     protected int pathIndex = 0; // Índice do ponto atual no caminho
 
-    private int vidaAtual = 30; // Vida inicial do inimigo, usada somente no método `ReceberDano`
+    [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo, usada somente no método `ReceberDano`
 
     // Método de interface que reduz a vida e verifica se o inimigo morreu
     public virtual void ReceberDano(int dano)
     {
-        vidaAtual -= dano; // Reduz a vida do inimigo pelo dano recebido
+        vidaAtual -= dano;
 
-        // Se a vida for menor ou igual a zero, chama o método OnMorte
         if (vidaAtual <= 0)
         {
             OnMorte();

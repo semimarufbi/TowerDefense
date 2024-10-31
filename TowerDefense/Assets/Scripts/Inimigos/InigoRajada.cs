@@ -10,7 +10,11 @@ public class InimigoRajada : inimigoBase
     private bool emRajada = true;
 
     // Atributo de vida específico para este inimigo
-    private int vidaAtual = 20;
+    protected override void Start()
+    {
+        base.Start();
+        vidaAtual = 70; // Defina a vida inicial específica para este inimigo
+    }
 
     protected override void Update()
     {
@@ -61,10 +65,6 @@ public class InimigoRajada : inimigoBase
 
     public override void ReceberDano(int dano)
     {
-        vidaAtual -= dano;
-        if (vidaAtual <= 0)
-        {
-            OnMorte();
-        }
+        base.ReceberDano(dano); // Chama o método da classe base
     }
 }

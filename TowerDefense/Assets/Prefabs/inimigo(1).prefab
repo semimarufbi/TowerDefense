@@ -132,7 +132,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 3531952142041779181}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -162,5 +162,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  vida: 10
   rb: {fileID: 6935579524408967807}
+  vidaAtual: 100
