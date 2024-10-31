@@ -33,6 +33,12 @@ public class Bloco : MonoBehaviour
 
         Tower towerToBuild = BuildManager.Instance.GetSelectedTower();
 
+        if (towerToBuild.coast > LevelManager.main.currency)
+        {
+            return;
+        }
+        LevelManager.main.SpendCurency(towerToBuild.coast);
+
         // Instanciando a torre corretamente
         tower = Instantiate(towerToBuild.prefab, transform.position, Quaternion.identity); // Atribuindo a torre ao campo 'tower'
     }
