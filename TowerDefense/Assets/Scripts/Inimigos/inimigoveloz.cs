@@ -6,6 +6,7 @@ public class InimigoVeloz : inimigoBase
     [Header("Atributos Específicos do Inimigo Veloz")]
     [SerializeField] private float aumentoDeVelocidade = 1.05f;
 
+
     protected override void Update()
     {
         base.Update();
@@ -45,5 +46,17 @@ public class InimigoVeloz : inimigoBase
         Vector2 direcao = (alvo.position - transform.position).normalized;
         rb.velocity = direcao * moveSpeed;
        
+    }
+    public override void ReceberDano(int dano)
+    {
+        int vida = 10;
+
+        vida -= dano; // Reduz a vida do inimigo pelo dano recebido
+
+        // Se a vida for menor ou igual a zero, chama o método OnMorte
+        if (vida <= 0)
+        {
+            OnMorte();
+        }
     }
 }
