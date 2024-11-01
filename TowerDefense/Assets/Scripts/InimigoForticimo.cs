@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class InimigoForticimo : inimigoBase
+{
+    protected override void Start()
+    {
+        base.Start(); // Chama o método Start da classe base
+        vidaAtual = 1000; // Aumenta a vida baseada na resistência
+    }
+
+    public override void ReceberDano(int dano)
+    {
+        base.ReceberDano(dano); // Chama o método da classe base
+    }
+
+    public override void Mover()
+    {
+        // Movimento específico, por exemplo, movimento lento
+        base.Mover(); // Chama o movimento da classe base
+    }
+}

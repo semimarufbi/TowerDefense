@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7604173711746346085}
   - component: {fileID: 2753095089878843562}
   m_Layer: 0
-  m_Name: wizard_level_3
+  m_Name: TorreBasica
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

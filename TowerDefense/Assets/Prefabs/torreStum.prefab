@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6721001583039785458}
   - component: {fileID: 6203531025729058310}
   m_Layer: 0
-  m_Name: knight_level_3
+  m_Name: torreStum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
