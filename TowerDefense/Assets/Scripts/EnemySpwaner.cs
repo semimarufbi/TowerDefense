@@ -89,6 +89,6 @@ public class EnemySpawner : MonoBehaviour
 
         // Seleciona um prefab aleatório da lista
         GameObject prefabParaSpawnar = prefabInimigo[Random.Range(0, prefabInimigo.Count)];
-        Instantiate(prefabParaSpawnar, LevelManager.main.startPoint.position, Quaternion.identity);
+        _ = Instantiate(prefabParaSpawnar, LevelManager.main.startPoint.position, Quaternion.identity);
     }
 }
