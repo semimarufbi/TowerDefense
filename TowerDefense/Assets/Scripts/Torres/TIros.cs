@@ -37,4 +37,10 @@ public class TIros : MonoBehaviour
 
         Destroy(gameObject); // Destrói o projétil após a colisão
     }
+
+    public void SetDirection(Vector2 direction)
+    {
+        rb.velocity = direction * bulletSpeed;
+    }
+
 }
