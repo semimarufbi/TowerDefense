@@ -23,7 +23,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        onEnemyDestroy.AddListener(EnemyDestroyed); // Assina o evento de destruição de inimigo
+        // Assina o evento de destruição de inimigo
+        onEnemyDestroy.AddListener(EnemyDestroyed);
     }
 
     private void Start()
@@ -35,47 +36,49 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!estaSpawnando) return; // Se não está spawnando, não faz nada
 
-        tempodepoisdospawn += Time.deltaTime;
+        tempodepoisdospawn += Time.deltaTime; // Atualiza o tempo desde o último spawn
 
         // Verifica se é hora de spawnar um inimigo
         if (tempodepoisdospawn >= (1f / inimigosPorSeg) && inimigosSaiuDoSpawn > 0)
         {
-            SpawnarInimigo();
-            inimigosSaiuDoSpawn--;
+            SpawnarInimigo(); // Chama o método para spawnar um inimigo
+            inimigosSaiuDoSpawn--; // Decrementa o contador de inimigos a serem spawnados
             inimigoVivo++; // Incrementa o contador de inimigos vivos
-            tempodepoisdospawn = 0f;
+            tempodepoisdospawn = 0f; // Reinicia o temporizador
         }
 
         // Inicia a próxima onda se todos os inimigos da onda atual foram derrotados
         if (inimigoVivo <= 0 && inimigosSaiuDoSpawn <= 0)
         {
-            TerminarOrda();
+            TerminarOrda(); // Chama o método para terminar a onda
         }
     }
 
     private void EnemyDestroyed()
     {
-        inimigoVivo--; // Reduz o contador de inimigos vivos quando um inimigo é destruído
+        // Reduz o contador de inimigos vivos quando um inimigo é destruído
+        inimigoVivo--;
     }
 
     private void TerminarOrda()
     {
         estaSpawnando = false; // Para o spawn da onda atual
-        tempodepoisdospawn = 0f;
+        tempodepoisdospawn = 0f; // Reinicia o temporizador
         ordaAtual++; // Incrementa a contagem de ondas
         StartCoroutine(StartWave()); // Inicia uma nova onda
     }
 
     private IEnumerator StartWave()
     {
-        yield return new WaitForSeconds(tempoEntreOrdas);
+        yield return new WaitForSeconds(tempoEntreOrdas); // Espera o tempo definido antes de iniciar a nova onda
         estaSpawnando = true; // Define que a nova onda está em processo de spawn
         inimigosSaiuDoSpawn = InimigoPorOrda(); // Calcula a quantidade de inimigos na nova onda
     }
 
     private int InimigoPorOrda()
     {
-        return Mathf.RoundToInt(inimigoBase * Mathf.Pow(ordaAtual, dificuldade)); // Calcula a quantidade de inimigos com base na dificuldade e na onda
+        // Calcula a quantidade de inimigos com base na dificuldade e na onda
+        return Mathf.RoundToInt(inimigoBase * Mathf.Pow(ordaAtual, dificuldade));
     }
 
     private void SpawnarInimigo()
@@ -83,12 +86,13 @@ public class EnemySpawner : MonoBehaviour
         // Verifica se a lista de prefabs não está vazia
         if (prefabInimigo.Count == 0)
         {
-            Debug.LogWarning("A lista de prefabs de inimigos está vazia!");
-            return;
+            Debug.LogWarning("A lista de prefabs de inimigos está vazia!"); // Log de aviso
+            return; // Sai do método se não houver prefabs
         }
 
         // Seleciona um prefab aleatório da lista
         GameObject prefabParaSpawnar = prefabInimigo[Random.Range(0, prefabInimigo.Count)];
+        // Instancia o inimigo na posição de início definida pelo LevelManager
         _ = Instantiate(prefabParaSpawnar, LevelManager.main.startPoint.position, Quaternion.identity);
     }
 }
