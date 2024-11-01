@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class torrelenta : Torre
 {
@@ -10,8 +9,11 @@ public class torrelenta : Torre
 
     protected override void Shoot()
     {
+        // Instancia o projétil de lentidão na posição do ponto de disparo
         GameObject bulletObj = Instantiate(bulletSlowPrefab, firingPoint.position, Quaternion.identity);
         TIrosLento bulletScript = bulletObj.GetComponent<TIrosLento>();
+
+        // Define o alvo do projétil
         bulletScript.SetTarget(target);
     }
 }
