@@ -5,7 +5,7 @@ using UnityEngine;
 public class inimigoBase : MonoBehaviour, IReceberDano
 {
     [Header("Atributos")]
-    [SerializeField] protected float moveSpeed = 100f; // Velocidade de movimento do inimigo
+    [SerializeField] public float moveSpeed = 100f; // Velocidade de movimento do inimigo
     [SerializeField] private int currentWorth = 50;
 
     [Header("Referências")]

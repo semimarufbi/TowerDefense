@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class TIros : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] Rigidbody2D rb;
-
-    [Header("Attributes")]
+    [Header("Referências")]
+    [SerializeField] protected Rigidbody2D rb; // Torne a referência protegida para acesso em subclasses
     [SerializeField] private float bulletSpeed = 5f;
-    [SerializeField] private int dano = 10; // Dano que o projétil causa ao inimigo
+    [SerializeField] protected int dano = 10; // Dano do projétil
 
-    private Transform target;
+    protected Transform target;
     private bool jaAplicouDano = false; // Garante que o dano seja aplicado apenas uma vez
 
     public void SetTarget(Transform _target)
@@ -19,33 +17,24 @@ public class TIros : MonoBehaviour
         target = _target;
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (!target) return;
         Vector2 direction = (target.position - transform.position).normalized;
-
         rb.velocity = direction * bulletSpeed;
     }
 
-    public void SetDirection(Vector2 direction)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        rb.velocity = direction * bulletSpeed;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (jaAplicouDano) return; // Sai da função se o dano já foi aplicado
-        jaAplicouDano = true;      // Marca o dano como já aplicado
+        if (jaAplicouDano) return;
+        jaAplicouDano = true;
 
         IReceberDano inimigo = collision.GetComponent<IReceberDano>();
-
         if (inimigo != null)
         {
-            Debug.Log($"Aplicando {dano} de dano ao inimigo.");
-            inimigo.ReceberDano(dano); // Aplica dano
+            inimigo.ReceberDano(dano); // Aplica dano ao inimigo
         }
 
         Destroy(gameObject); // Destrói o projétil após a colisão
     }
-
 }
