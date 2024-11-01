@@ -6,18 +6,22 @@ public class InimigoForticimo : inimigoBase
 {
     protected override void Start()
     {
-        base.Start(); // Chama o método Start da classe base
-        vidaAtual = 1000; // Aumenta a vida baseada na resistência
+        base.Start(); // Chama o método Start da classe base para inicializações padrão
+        vidaAtual = 1000; // Define a vida atual do inimigo como 1000, aumentando sua resistência
     }
 
+    // Método que lida com o dano recebido pelo inimigo
     public override void ReceberDano(int dano)
     {
-        base.ReceberDano(dano); // Chama o método da classe base
+        base.ReceberDano(dano); // Chama o método da classe base para aplicar o dano
+        // Aqui você pode adicionar lógica adicional, como efeitos visuais ou sons ao receber dano
     }
 
+    // Método que controla o movimento do inimigo
     public override void Mover()
     {
-        // Movimento específico, por exemplo, movimento lento
+        // Implementa um movimento específico para este inimigo, como um movimento lento
         base.Mover(); // Chama o movimento da classe base
+        // Você pode adicionar lógica adicional para o movimento, como mudar a velocidade ou animações
     }
 }
