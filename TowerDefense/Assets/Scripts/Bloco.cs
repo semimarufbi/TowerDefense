@@ -5,41 +5,49 @@ using UnityEngine;
 public class Bloco : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private SpriteRenderer sr;
-    [SerializeField] private Color hoverColor;
+    [SerializeField] private SpriteRenderer sr; // Referência ao componente SpriteRenderer para alterar a cor do bloco
+    [SerializeField] private Color hoverColor; // Cor que o bloco deve mudar quando o mouse passa sobre ele
 
     [Header("Attributes")]
-    private GameObject tower;
-    private Color startColor;
+    private GameObject tower; // Referência para a torre que pode ser construída neste bloco
+    private Color startColor; // Armazena a cor original do bloco para restaurar quando o mouse sai
 
     private void Start()
     {
+        // Salva a cor original do bloco ao iniciar o jogo
         startColor = sr.color;
     }
 
     private void OnMouseEnter()
     {
+        // Muda a cor do bloco para 'hoverColor' quando o mouse entra na área do bloco
         sr.color = hoverColor;
     }
 
     private void OnMouseExit()
     {
+        // Restaura a cor original do bloco quando o mouse sai da área do bloco
         sr.color = startColor;
     }
 
     private void OnMouseDown()
     {
+        // Verifica se já existe uma torre neste bloco
         if (tower != null) return;
 
+        // Obtém a torre selecionada através do BuildManager
         Tower towerToBuild = BuildManager.Instance.GetSelectedTower();
 
+        // Verifica se há moeda suficiente para construir a torre
         if (towerToBuild.coast > LevelManager.main.currency)
         {
-            return;
+            return; // Não constrói a torre se não houver moedas suficientes
         }
+
+        // Deduz o custo da construção da torre da moeda disponível
         LevelManager.main.SpendCurency(towerToBuild.coast);
 
-        // Instanciando a torre corretamente
-        tower = Instantiate(towerToBuild.prefab, transform.position, Quaternion.identity); // Atribuindo a torre ao campo 'tower'
+        // Instancia a torre na posição do bloco, atribuindo-a ao campo 'tower'
+        tower = Instantiate(towerToBuild.prefab, transform.position, Quaternion.identity);
     }
 }
