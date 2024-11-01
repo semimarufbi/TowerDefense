@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Classe base para os inimigos que implementa a interface IReceberDano
 public class inimigoBase : MonoBehaviour, IReceberDano
 {
     [Header("Atributos")]
     [SerializeField] public float moveSpeed = 100f; // Velocidade de movimento do inimigo
-    [SerializeField] private int currentWorth = 50;
+    [SerializeField] private int currentWorth = 50; // Valor que o inimigo dá ao ser derrotado
 
     [Header("Referências")]
     [SerializeField] protected Rigidbody2D rb; // Referência ao componente Rigidbody2D para controle de física
@@ -14,14 +15,14 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     protected Transform alvo; // Posição do alvo atual no caminho
     protected int pathIndex = 0; // Índice do ponto atual no caminho
 
-    [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo, usada somente no método `ReceberDano`
+    [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo
 
-    // Método de interface que reduz a vida e verifica se o inimigo morreu
+    // Método da interface que reduz a vida do inimigo e verifica se ele morreu
     public virtual void ReceberDano(int dano)
     {
-        vidaAtual -= dano;
-       
-        if (vidaAtual <= 0)
+        vidaAtual -= dano; // Reduz a vida do inimigo pelo dano recebido
+
+        if (vidaAtual <= 0) // Verifica se o inimigo morreu
         {
             OnMorte();
         }
@@ -34,6 +35,7 @@ public class inimigoBase : MonoBehaviour, IReceberDano
 
     protected virtual void Update()
     {
+        // Verifica a distância até o alvo e atualiza o destino se próximo o suficiente
         if (Vector2.Distance(alvo.position, transform.position) <= 0.1f)
         {
             AtualizarDestino();
@@ -42,32 +44,36 @@ public class inimigoBase : MonoBehaviour, IReceberDano
 
     private void FixedUpdate()
     {
-        Mover();
+        Mover(); // Chama o método de movimento a cada atualização de física
     }
 
+    // Método responsável pelo movimento do inimigo
     public virtual void Mover()
     {
+        // Calcula a direção para o alvo e aplica a velocidade
         Vector2 direcao = (alvo.position - transform.position).normalized;
-        rb.velocity = direcao * moveSpeed;
+        rb.velocity = direcao * moveSpeed; // Aplica a velocidade ao Rigidbody2D
     }
 
+    // Atualiza o destino do inimigo para o próximo ponto no caminho
     protected virtual void AtualizarDestino()
     {
-        pathIndex++;
-        if (pathIndex >= LevelManager.main.path.Length)
+        pathIndex++; // Incrementa o índice do caminho
+        if (pathIndex >= LevelManager.main.path.Length) // Verifica se chegou ao final do caminho
         {
-            OnMorte();
+            OnMorte(); // Chama o método de morte se alcançou o final
         }
         else
         {
-            alvo = LevelManager.main.path[pathIndex];
+            alvo = LevelManager.main.path[pathIndex]; // Atualiza o alvo para o próximo ponto
         }
     }
 
+    // Método chamado quando o inimigo morre
     public virtual void OnMorte()
     {
-        EnemySpawner.onEnemyDestroy.Invoke();
-        Destroy(gameObject);
-        LevelManager.main.IncreaseCurerency(currentWorth);
+        EnemySpawner.onEnemyDestroy.Invoke(); // Invoca evento de destruição do inimigo
+        Destroy(gameObject); // Destroi o objeto inimigo
+        LevelManager.main.IncreaseCurerency(currentWorth); // Aumenta a moeda do jogador
     }
 }
