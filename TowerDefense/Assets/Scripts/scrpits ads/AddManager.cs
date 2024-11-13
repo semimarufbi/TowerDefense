@@ -29,6 +29,16 @@ public class AddManager : MonoBehaviour,IUnityAdsInitializationListener
     {
         Debug.LogError($"unity ads Initialization Failed: {error} - {message}");
     }
+    private void IEmulator BannerLoop()
+    {
+        while (true)
+        {
+            ShowBanner();
+            yield return new WaitForSeconds(10);
+            HideBanner();
+            yield return new WaitForSeconds(5);
+        }
+    }
 
     
 }
