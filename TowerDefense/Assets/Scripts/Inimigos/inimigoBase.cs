@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // Classe base para os inimigos que implementa a interface IReceberDano
 public class inimigoBase : MonoBehaviour, IReceberDano
 {
+    [SerializeField] public Button botao;
     [Header("Atributos")]
     [SerializeField] public float moveSpeed = 100f; // Velocidade de movimento do inimigo
     [SerializeField] private int currentWorth = 50; // Valor que o inimigo dá ao ser derrotado
@@ -63,6 +65,8 @@ public class inimigoBase : MonoBehaviour, IReceberDano
         {
             OnMorte(); // Chama o método de morte se alcançou o final
             Time.timeScale = 0;
+           
+            
            
         }
         else
