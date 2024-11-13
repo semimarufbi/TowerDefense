@@ -164,4 +164,4 @@ MonoBehaviour:
   moveSpeed: 1
   currentWorth: 50
   rb: {fileID: 5555955452213018931}
-  vidaAtual: 1000
+  vidaAtual: 300

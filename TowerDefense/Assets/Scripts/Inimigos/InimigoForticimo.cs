@@ -7,7 +7,7 @@ public class InimigoForticimo : inimigoBase
     protected override void Start()
     {
         base.Start(); // Chama o método Start da classe base para inicializações padrão
-        vidaAtual = 1000; // Define a vida atual do inimigo como 1000, aumentando sua resistência
+        vidaAtual = 1; // Define a vida atual do inimigo como 1000, aumentando sua resistência
     }
 
     // Método que lida com o dano recebido pelo inimigo
