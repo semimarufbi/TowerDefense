@@ -62,6 +62,8 @@ public class inimigoBase : MonoBehaviour, IReceberDano
         if (pathIndex >= LevelManager.main.path.Length) // Verifica se chegou ao final do caminho
         {
             OnMorte(); // Chama o método de morte se alcançou o final
+            Time.timeScale = 0;
+           
         }
         else
         {
