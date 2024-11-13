@@ -27,7 +27,8 @@ public class AddManager : MonoBehaviour,IUnityAdsInitializationListener
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        
+        Debug.LogError($"unity ads Initialization Failed: {error} - {message}");
     }
+
     
 }
