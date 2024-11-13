@@ -1649,6 +1649,8 @@ GameObject:
   m_Component:
   - component: {fileID: 239115438}
   - component: {fileID: 239115437}
+  - component: {fileID: 239115441}
+  - component: {fileID: 239115442}
   - component: {fileID: 239115439}
   - component: {fileID: 239115440}
   m_Layer: 0
@@ -1748,6 +1750,34 @@ MonoBehaviour:
   - name: torre multipla
     coast: 200
     prefab: {fileID: 2172456976082061036, guid: 6956745f7db15904095d657dbd5af850, type: 3}
+--- !u!114 &239115441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239115436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e05a07f4f2b8a54ca4957e044e75312, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameId: 5730170
+  testMode: 1
+  interstitialPlacementId: Interstitial_Android
+  interstitialCounter: 1
+--- !u!114 &239115442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239115436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39fc2d808c23ec346bdcc53a23b46b1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &277031060
 PrefabInstance:
   m_ObjectHideFlags: 0
