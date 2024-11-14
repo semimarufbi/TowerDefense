@@ -1756,7 +1756,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239115436}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39fc2d808c23ec346bdcc53a23b46b1b, type: 3}
   m_Name: 
@@ -2472,7 +2472,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 485714219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3becfa29e60719c4985e2ae0389150fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 39fc2d808c23ec346bdcc53a23b46b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &488969455
@@ -4078,8 +4078,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 485714225}
-        m_TargetAssemblyTypeName: AdsButton, Assembly-CSharp
-        m_MethodName: ShowAd
+        m_TargetAssemblyTypeName: AdManager, Assembly-CSharp
+        m_MethodName: OnRewardButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
