@@ -45,7 +45,7 @@ public class AddManager : MonoBehaviour, IUnityAdsInitializationListener
     private void ShowBannerAd()
     {
         Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
-        Advertisement.Banner.Show("Banner_Ad"); // Certifique-se de que "Banner_Ad" é o ID correto do banner no painel do Unity Ads
+        Advertisement.Banner.Show("Banner_Android"); // Certifique-se de que "Banner_Ad" é o ID correto do banner no painel do Unity Ads
     }
 
     private void HideBannerAd()
