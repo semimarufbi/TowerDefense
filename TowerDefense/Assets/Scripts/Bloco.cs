@@ -45,7 +45,7 @@ public class Bloco : MonoBehaviour
         }
 
         // Deduz o custo da construção da torre da moeda disponível
-        LevelManager.main.SpendCurency(towerToBuild.coast);
+        LevelManager.main.SpendCurrency(towerToBuild.coast);
 
         // Instancia a torre na posição do bloco, atribuindo-a ao campo 'tower'
         tower = Instantiate(towerToBuild.prefab, transform.position, Quaternion.identity);

@@ -80,6 +80,6 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     {
         EnemySpawner.onEnemyDestroy.Invoke(); // Invoca evento de destruição do inimigo
         Destroy(gameObject); // Destroi o objeto inimigo
-        LevelManager.main.IncreaseCurerency(currentWorth); // Aumenta a moeda do jogador
+        LevelManager.main.IncreaseCurrency(currentWorth); // Aumenta a moeda do jogador
     }
 }
