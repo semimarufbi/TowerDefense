@@ -5,6 +5,7 @@ using UnityEngine;
 // Classe responsável pela gestão do nível, incluindo caminho e moedas
 public class LevelManager : MonoBehaviour
 {
+
     public static LevelManager main; // Instância estática para acesso global
     public Transform[] path; // Array que armazena os pontos do caminho
     public Transform startPoint; // Ponto inicial do caminho
