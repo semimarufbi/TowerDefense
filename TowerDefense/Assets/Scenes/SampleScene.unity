@@ -1766,6 +1766,7 @@ MonoBehaviour:
   - {fileID: 586258842}
   - {fileID: 1566895895}
   startPoint: {fileID: 1969422012}
+  gameOverPanel: {fileID: 103494116}
   currency: 0
 --- !u!4 &239115438
 Transform:
@@ -1833,7 +1834,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239115436}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39fc2d808c23ec346bdcc53a23b46b1b, type: 3}
   m_Name: 
@@ -2482,76 +2483,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8350269921311933559, guid: b2e030ac4d404bd4fa47f5f23edda5e6, type: 3}
   m_PrefabInstance: {fileID: 450541631}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &485714219
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 485714222}
-  - component: {fileID: 485714221}
-  - component: {fileID: 485714224}
-  - component: {fileID: 485714225}
-  m_Layer: 0
-  m_Name: Ads
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &485714221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485714219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c754da4524bcd948b8a922e429afdba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &485714222
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485714219}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &485714224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485714219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cec91d022b6ad3d49b2e04a973c92e53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &485714225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485714219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39fc2d808c23ec346bdcc53a23b46b1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &488969455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2870,7 +2801,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4155,9 +4086,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 485714225}
+      - m_Target: {fileID: 239115442}
         m_TargetAssemblyTypeName: AdManager, Assembly-CSharp
-        m_MethodName: OnRewardButtonClick
+        m_MethodName: BotaoRecompensa
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5456,7 +5387,7 @@ GameObject:
   - component: {fileID: 1162211502}
   - component: {fileID: 1162211501}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Mais Moedas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5501,7 +5432,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100 moedas
+  m_text: 'Mais Moedas
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8345,7 +8278,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1877562232}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 239115442}
+        m_TargetAssemblyTypeName: AdManager, Assembly-CSharp
+        m_MethodName: BotaoReviver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1877562232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9443,4 +9388,3 @@ SceneRoots:
   - {fileID: 1566895895}
   - {fileID: 767856215}
   - {fileID: 1713585946}
-  - {fileID: 485714222}
