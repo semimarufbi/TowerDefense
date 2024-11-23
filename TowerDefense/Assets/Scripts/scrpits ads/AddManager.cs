@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 
 public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsShowListener
 {
@@ -13,11 +14,16 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     gifts reviver;
     private Coroutine bannerLoopCoroutine; // Armazena a coroutine do BannerLoop
     private bool isShowingInterstitial = false; // Indica se o intersticial está sendo exibido
+    private System.Action adCompletedAction; // Armazena a ação a ser executada após o anúncio
+    private string rewardedAdId = "Rewarded_Android"; // ID do anúncio recompensado
+
+
 
     void Start()
     {
         InitializeAds();
         recompensa = Recompensa;
+        reviver = Reviver;
     }
 
     private void InitializeAds()
@@ -93,20 +99,19 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
             Debug.LogError("LevelManager.main is null. Cannot reward currency.");
         }
     }
-    public void ShowRewardedAd()
+    public void ShowRewardedAd(System.Action actionAfterAd)
     {
-        Advertisement.Show("Rewarded_Android", this);  // Exibe um anúncio recompensado
-        
-        
+        adCompletedAction = actionAfterAd; // Armazena a ação que será executada após o anúncio
+        Advertisement.Show(rewardedAdId, this); // Exibe o anúncio recompensado
     }
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        if (placementId == "Rewarded_Android" && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+        if (placementId == rewardedAdId && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
         {
-           Recompensa();
+            adCompletedAction?.Invoke(); // Executa a ação armazenada (neste caso, Reviver ou Recompensa)
         }
     }
-  
+
 
     public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
     {
@@ -124,12 +129,21 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
         Debug.Log($"Unity Ads clicked: {placementId}");
         Advertisement.Banner.Show(bannerAdId);
     }
-    void Reviver()
+   public void Reviver()
     {
-
+        LevelManager.main.Reiniciar();
+    }
+    public void BotaoRecompensa()
+    {
+        ShowRewardedAd(Recompensa); // Mostra o anúncio e depois dá a recompensa
     }
 
+    public void BotaoReviver()
+    {
+        ShowRewardedAd(Reviver); // Passa o método Reviver para ser executado após o anúncio
+    }
 }
+
 
 
 
