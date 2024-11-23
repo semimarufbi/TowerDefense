@@ -66,6 +66,7 @@ public class EnemySpawner : MonoBehaviour
         tempodepoisdospawn = 0f; // Reinicia o temporizador
         ordaAtual++; // Incrementa a contagem de ondas
         StartCoroutine(StartWave()); // Inicia uma nova onda
+        AdManager.instance.ShowNextAd(); // Exibe o próximo anúncio
     }
 
     private IEnumerator StartWave()

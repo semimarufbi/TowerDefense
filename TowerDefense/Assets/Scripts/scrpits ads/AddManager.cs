@@ -1,23 +1,30 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 
 public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsShowListener
 {
+    public static AdManager instance;
     private string gameId = "5730170"; // Seu ID do projeto
     private bool testMode = true;
     private string interstitialAdId = "Interstitial_Android";
     private string bannerAdId = "Banner_Android"; // Verifique se este é o ID correto no painel do Unity Ads
-     delegate void gifts();
-    gifts recompensa;
-    gifts reviver;
+    private string rewardedAdId = "Rewarded_Android"; // ID do anúncio recompensado
+    private string naoPulavelId = "noskip"; // ID do anúncio não pulável
+    private bool showInterstitialNext = true; // Controla qual tipo de anúncio será mostrado: intersticial ou não pulavel
+
     private Coroutine bannerLoopCoroutine; // Armazena a coroutine do BannerLoop
     private bool isShowingInterstitial = false; // Indica se o intersticial está sendo exibido
-    private System.Action adCompletedAction; // Armazena a ação a ser executada após o anúncio
-    private string rewardedAdId = "Rewarded_Android"; // ID do anúncio recompensado
+    private System.Action adCompletedAction; // Ação após a exibição do anúncio
 
+    private delegate void gifts();
+    private gifts recompensa;
+    private gifts reviver;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -37,9 +44,9 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     public void OnInitializationComplete()
     {
         Debug.Log("Unity Ads initialization complete.");
-      
-        bannerLoopCoroutine = StartCoroutine(BannerLoop()); // Inicia o loop de exibição do banner após a inicialização
 
+        // Inicia o loop de banners após a inicialização
+        bannerLoopCoroutine = StartCoroutine(BannerLoop());
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
@@ -88,30 +95,51 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
         Advertisement.Banner.Hide();
     }
 
+    private void Naopulavel()
+    {
+        Advertisement.Show(naoPulavelId, this); // Exibe o anúncio não pulável
+    }
+
     void Recompensa()
     {
         if (LevelManager.main != null)
         {
-            LevelManager.main.RewardCurrency();
+            LevelManager.main.RewardCurrency(); // Dá a recompensa ao jogador
         }
         else
         {
             Debug.LogError("LevelManager.main is null. Cannot reward currency.");
         }
     }
+
+    public void ShowInterstitialAd()
+    {
+        Advertisement.Show(interstitialAdId, this); // Exibe o anúncio intersticial
+        isShowingInterstitial = true; // Define que o intersticial está sendo exibido
+        Time.timeScale = 0; // Pausa o tempo durante o anúncio
+    }
+
     public void ShowRewardedAd(System.Action actionAfterAd)
     {
         adCompletedAction = actionAfterAd; // Armazena a ação que será executada após o anúncio
         Advertisement.Show(rewardedAdId, this); // Exibe o anúncio recompensado
     }
+
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
+        // Quando um anúncio recompensado é concluído
         if (placementId == rewardedAdId && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
         {
-            adCompletedAction?.Invoke(); // Executa a ação armazenada (neste caso, Reviver ou Recompensa)
+            adCompletedAction?.Invoke(); // Executa a ação armazenada (Recompensa ou Reviver)
+        }
+
+        // Quando o anúncio intersticial é concluído
+        if (placementId == interstitialAdId && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+        {
+            isShowingInterstitial = false; // Define que o intersticial foi fechado
+            Time.timeScale = 1; // Restaura o tempo normal
         }
     }
-
 
     public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
     {
@@ -121,29 +149,42 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     public void OnUnityAdsShowStart(string placementId)
     {
         Debug.Log($"Unity Ads started showing: {placementId}");
-        Advertisement.Banner.Hide();
+        Advertisement.Banner.Hide(); // Esconde o banner durante o anúncio
     }
 
     public void OnUnityAdsShowClick(string placementId)
     {
         Debug.Log($"Unity Ads clicked: {placementId}");
-        Advertisement.Banner.Show(bannerAdId);
+        Advertisement.Banner.Show(bannerAdId); // Exibe o banner novamente após o clique
     }
-   public void Reviver()
+
+    public void Reviver()
     {
-        LevelManager.main.Reiniciar();
+        LevelManager.main.Reiniciar(); // Ação de reviver o jogador
     }
+
     public void BotaoRecompensa()
     {
-        ShowRewardedAd(Recompensa); // Mostra o anúncio e depois dá a recompensa
+        ShowRewardedAd(Recompensa); // Mostra o anúncio e dá a recompensa
     }
 
     public void BotaoReviver()
     {
         ShowRewardedAd(Reviver); // Passa o método Reviver para ser executado após o anúncio
     }
+
+    public void ShowNextAd()
+    {
+        if (showInterstitialNext)
+        {
+            ShowInterstitialAd();  // Mostra o anúncio intersticial
+        }
+        else
+        {
+            Naopulavel();  // Mostra o anúncio não pulável
+        }
+
+        // Alterna o tipo de anúncio para o próximo
+        showInterstitialNext = !showInterstitialNext;
+    }
 }
-
-
-
-
