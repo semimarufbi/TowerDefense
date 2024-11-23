@@ -31,6 +31,7 @@ public class InimigoLento : inimigoBase
         // Se o inimigo alcança o final do caminho
         if (pathIndex >= LevelManager.main.path.Length)
         {
+            LevelManager.main.GameOver();
             OnMorte(); // Chama o método para lidar com a morte do inimigo
         }
         else

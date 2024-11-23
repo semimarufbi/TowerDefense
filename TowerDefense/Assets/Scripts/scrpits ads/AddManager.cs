@@ -2,19 +2,22 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using System.Collections;
 
-public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
+public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityAdsShowListener
 {
     private string gameId = "5730170"; // Seu ID do projeto
     private bool testMode = true;
     private string interstitialAdId = "Interstitial_Android";
     private string bannerAdId = "Banner_Android"; // Verifique se este é o ID correto no painel do Unity Ads
-
+     delegate void gifts();
+    gifts recompensa;
+    gifts reviver;
     private Coroutine bannerLoopCoroutine; // Armazena a coroutine do BannerLoop
     private bool isShowingInterstitial = false; // Indica se o intersticial está sendo exibido
 
     void Start()
     {
         InitializeAds();
+        recompensa = Recompensa;
     }
 
     private void InitializeAds()
@@ -28,8 +31,9 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     public void OnInitializationComplete()
     {
         Debug.Log("Unity Ads initialization complete.");
-        LoadInterstitialAd(); // Carrega o anúncio intersticial quando a inicialização é concluída
+      
         bannerLoopCoroutine = StartCoroutine(BannerLoop()); // Inicia o loop de exibição do banner após a inicialização
+
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
@@ -78,69 +82,54 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
         Advertisement.Banner.Hide();
     }
 
-    // Método chamado ao clicar no botão de recompensa
-    public void OnRewardButtonClick()
+    void Recompensa()
     {
-        Debug.Log("Botão clicado! Tentando mostrar o anúncio...");
-        ShowInterstitialAd();
-    }
-
-    // Método para mostrar o anúncio intersticial
-    public void ShowInterstitialAd()
-    {
-        Debug.Log("Verificando se o anúncio está pronto...");
-
-        isShowingInterstitial = true; // Marca que o intersticial está sendo exibido
-
-        // Tente exibir o anúncio
-        Advertisement.Show(interstitialAdId, this);
-
-        // Para garantir que o banner seja ocultado enquanto o intersticial está ativo
-        HideBannerAd();
-    }
-
-    public void OnUnityAdsShowStart(string adUnitId) { }
-
-    public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
-    {
-        if (adUnitId == interstitialAdId)
+        if (LevelManager.main != null)
         {
-            Debug.Log("Anúncio intersticial completo.");
-            isShowingInterstitial = false; // Marca que o intersticial foi fechado
-            LoadInterstitialAd(); // Carrega o próximo anúncio intersticial
-
-            // Reinicia o loop do banner quando o intersticial termina
-            if (bannerLoopCoroutine == null)
-            {
-                bannerLoopCoroutine = StartCoroutine(BannerLoop());
-            }
-
-            // Recompensa o jogador com 100 moedas após o intersticial ser completado
             LevelManager.main.RewardCurrency();
-            Debug.Log("Jogador recebeu 100 moedas de recompensa!");
+        }
+        else
+        {
+            Debug.LogError("LevelManager.main is null. Cannot reward currency.");
         }
     }
-
-    public void OnUnityAdsAdLoaded(string adUnitId)
+    public void ShowRewardedAd()
     {
-        Debug.Log("Ad Loaded: " + adUnitId);
+        Advertisement.Show("Rewarded_Android", this);  // Exibe um anúncio recompensado
+        
+        
+    }
+    public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+    {
+        if (placementId == "Rewarded_Android" && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+        {
+           Recompensa();
+        }
+    }
+  
+
+    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+    {
+        Debug.LogError($"Unity Ads failed to show: {placementId}, Error: {error}, Message: {message}");
     }
 
-    public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)
+    public void OnUnityAdsShowStart(string placementId)
     {
-        Debug.LogError($"Error loading ad {adUnitId}: {error.ToString()} - {message}");
+        Debug.Log($"Unity Ads started showing: {placementId}");
+        Advertisement.Banner.Hide();
     }
 
-    public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
+    public void OnUnityAdsShowClick(string placementId)
     {
-        Debug.LogError($"Error showing ad {adUnitId}: {error.ToString()} - {message}");
+        Debug.Log($"Unity Ads clicked: {placementId}");
+        Advertisement.Banner.Show(bannerAdId);
+    }
+    void Reviver()
+    {
+
     }
 
-    public void OnUnityAdsShowClick(string adUnitId) { }
-
-    // Carrega o anúncio intersticial
-    private void LoadInterstitialAd()
-    {
-        Advertisement.Load(interstitialAdId, this);
-    }
 }
+
+
+

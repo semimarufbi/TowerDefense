@@ -14,8 +14,8 @@ public class inimigoBase : MonoBehaviour, IReceberDano
     [Header("Referências")]
     [SerializeField] protected Rigidbody2D rb; // Referência ao componente Rigidbody2D para controle de física
 
-    protected Transform alvo; // Posição do alvo atual no caminho
-    protected int pathIndex = 0; // Índice do ponto atual no caminho
+    public Transform alvo; // Posição do alvo atual no caminho
+    public int pathIndex = 0; // Índice do ponto atual no caminho
 
     [SerializeField] public int vidaAtual = 100; // Vida inicial do inimigo
 
@@ -27,7 +27,7 @@ public class inimigoBase : MonoBehaviour, IReceberDano
         if (vidaAtual <= 0) // Verifica se o inimigo morreu
         {
             OnMorte();
-            painel.SetActive(true); // Ativa o painel
+            
         }
     }
 
@@ -64,8 +64,9 @@ public class inimigoBase : MonoBehaviour, IReceberDano
         pathIndex++; // Incrementa o índice do caminho
         if (pathIndex >= LevelManager.main.path.Length) // Verifica se chegou ao final do caminho
         {
+           LevelManager.main.GameOver();
             OnMorte(); // Chama o método de morte se alcançou o final
-            GameOver(); // Chama o método Game Over
+            
         }
         else
         {
@@ -81,32 +82,9 @@ public class inimigoBase : MonoBehaviour, IReceberDano
         LevelManager.main.IncreaseCurrency(currentWorth); // Aumenta a moeda do jogador
     }
 
-    // Método para lidar com o Game Over
-    public virtual void GameOver()
-    {
-        // Pausa o jogo (Time.timeScale = 0)
-        Time.timeScale = 0;
+   
+   
 
-        // Exibe o painel de Game Over
-        if (painel != null)
-        {
-            painel.SetActive(true); // Mostra o painel de Game Over
-        }
-
-        // Aqui, você pode adicionar mais ações, como tocar uma música ou animação de Game Over
-
-        // Opcional: Se você deseja reiniciar o jogo ou voltar para a tela inicial, pode adicionar um botão no painel
-        // que chama um método para reiniciar o nível ou voltar para o menu principal.
-        // Por exemplo, se o botão "Restart" no painel for pressionado:
-        // RestartGame();
-    }
-
-    // Método para reiniciar o jogo (apenas exemplo)
-    public void RestartGame()
-    {
-        Time.timeScale = 1; // Retorna o tempo para a velocidade normal
-        // Aqui você pode adicionar lógica para reiniciar o nível, como recarregar a cena atual
-        // Exemplo:
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    
+    
 }

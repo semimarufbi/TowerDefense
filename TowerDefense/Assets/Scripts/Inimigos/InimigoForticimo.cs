@@ -24,4 +24,19 @@ public class InimigoForticimo : inimigoBase
         base.Mover(); // Chama o movimento da classe base
         // Você pode adicionar lógica adicional para o movimento, como mudar a velocidade ou animações
     }
+    protected override void AtualizarDestino()
+    {
+        pathIndex++;
+
+        // Verifica se ainda há mais pontos no caminho
+        if (pathIndex >= LevelManager.main.path.Length)
+        {
+            LevelManager.main.GameOver();
+            OnMorte(); // Chama a destruição do inimigo se chegou ao fim do caminho
+        }
+        else
+        {
+            alvo = LevelManager.main.path[pathIndex];
+        }
+    }
 }

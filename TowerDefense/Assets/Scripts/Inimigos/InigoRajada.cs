@@ -55,6 +55,7 @@ public class InimigoRajada : inimigoBase
         // Verifica se ainda há mais pontos no caminho
         if (pathIndex >= LevelManager.main.path.Length)
         {
+            LevelManager.main.GameOver();
             OnMorte(); // Chama a destruição do inimigo se chegou ao fim do caminho
         }
         else

@@ -7,6 +7,9 @@ public class LevelManager : MonoBehaviour
     public static LevelManager main;
     public Transform[] path;
     public Transform startPoint;
+    private bool isGameOver = false; // Para evitar chamadas repetidas do Game Over
+
+    public GameObject gameOverPanel; // Painel de Game Over (defina no Inspector)
 
     public int currency;
 
@@ -41,6 +44,32 @@ public class LevelManager : MonoBehaviour
     // Método para adicionar 100 moedas como recompensa
     public void RewardCurrency()
     {
-        IncreaseCurrency(100);
+        int reward = Random.Range(100, 1000);
+        IncreaseCurrency(reward);
+        Debug.Log($"Você ganhou {reward} moedas!");
+    }
+
+    public void GameOver()
+    {
+        if (isGameOver) return; // Evita que o Game Over seja chamado várias vezes
+
+        isGameOver = true; // Marca que o jogo terminou
+        Debug.Log("Game Over! Um inimigo alcançou o ponto final.");
+
+        // Exibe o painel de Game Over
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
+
+        
+      
+
+       
+    }
+    public void Reiniciar()
+    {
+        gameOverPanel.SetActive(false);
+        Time.timeScale = 1;
+        isGameOver=false;
+
     }
 }
