@@ -59,11 +59,16 @@ public class LevelManager : MonoBehaviour
         // Exibe o painel de Game Over
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
+        if (!AdManager.instance.isGamePausedByAd)
+        {
+            Time.timeScale = 0; // Apenas pausa o jogo se não estiver pausado por um anúncio
+        }
 
-        
-      
 
-       
+
+
+
+
     }
     public void Reiniciar()
     {

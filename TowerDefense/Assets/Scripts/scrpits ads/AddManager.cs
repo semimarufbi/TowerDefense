@@ -16,6 +16,8 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     private Coroutine bannerLoopCoroutine; // Armazena a coroutine do BannerLoop
     private bool isShowingInterstitial = false; // Indica se o intersticial está sendo exibido
     private System.Action adCompletedAction; // Ação após a exibição do anúncio
+    public bool isGamePausedByAd = false; // Indica se o jogo está pausado por causa de um anúncio
+
 
     private delegate void gifts();
     private gifts recompensa;
@@ -114,32 +116,50 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
 
     public void ShowInterstitialAd()
     {
+        if (!isGamePausedByAd)
+        {
+            Time.timeScale = 0; // Pausa o tempo do jogo
+            isGamePausedByAd = true; // Marca que o jogo está pausado por causa do anúncio
+        }
         Advertisement.Show(interstitialAdId, this); // Exibe o anúncio intersticial
         isShowingInterstitial = true; // Define que o intersticial está sendo exibido
-        Time.timeScale = 0; // Pausa o tempo durante o anúncio
     }
+
 
     public void ShowRewardedAd(System.Action actionAfterAd)
     {
+        if (!isGamePausedByAd)
+        {
+            Time.timeScale = 0; // Pausa o tempo do jogo
+            isGamePausedByAd = true; // Marca que o jogo está pausado por causa do anúncio
+        }
         adCompletedAction = actionAfterAd; // Armazena a ação que será executada após o anúncio
         Advertisement.Show(rewardedAdId, this); // Exibe o anúncio recompensado
     }
 
+
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        // Quando um anúncio recompensado é concluído
-        if (placementId == rewardedAdId && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+        if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
         {
-            adCompletedAction?.Invoke(); // Executa a ação armazenada (Recompensa ou Reviver)
+            if (placementId == rewardedAdId)
+            {
+                adCompletedAction?.Invoke(); // Executa a ação armazenada (Recompensa ou Reviver)
+            }
+            else if (placementId == interstitialAdId)
+            {
+                isShowingInterstitial = false; // Define que o intersticial foi fechado
+            }
         }
 
-        // Quando o anúncio intersticial é concluído
-        if (placementId == interstitialAdId && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
+        // Restaura o tempo normal apenas se o jogo estava pausado por um anúncio
+        if (isGamePausedByAd)
         {
-            isShowingInterstitial = false; // Define que o intersticial foi fechado
-            Time.timeScale = 1; // Restaura o tempo normal
+            Time.timeScale = 1;
+            isGamePausedByAd = false; // Reseta o estado de pausa por anúncio
         }
     }
+
 
     public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
     {
