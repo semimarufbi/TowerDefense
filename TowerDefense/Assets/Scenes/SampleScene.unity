@@ -1839,6 +1839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39fc2d808c23ec346bdcc53a23b46b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGamePausedByAd: 0
 --- !u!1001 &277031060
 PrefabInstance:
   m_ObjectHideFlags: 0
