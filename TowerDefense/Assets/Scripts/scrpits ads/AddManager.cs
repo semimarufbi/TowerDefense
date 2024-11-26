@@ -15,13 +15,13 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
 
     private Coroutine bannerLoopCoroutine; // Armazena a coroutine do BannerLoop
     private bool isShowingInterstitial = false; // Indica se o intersticial está sendo exibido
-    private System.Action adCompletedAction; // Ação após a exibição do anúncio
+    
     public bool isGamePausedByAd = false; // Indica se o jogo está pausado por causa de um anúncio
 
 
-    private delegate void gifts();
+    public delegate void gifts();
     private gifts recompensa;
-    private gifts reviver;
+    
 
     private void Awake()
     {
@@ -31,8 +31,7 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     void Start()
     {
         InitializeAds();
-        recompensa = Recompensa;
-        reviver = Reviver;
+       
     }
 
     private void InitializeAds()
@@ -41,6 +40,11 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
         {
             Advertisement.Initialize(gameId, testMode, this);
         }
+    }
+    public void ShowRewardedAdForAction(gifts action)
+    {
+        recompensa = action; // Define a ação que será executada após o anúncio
+        ShowRewardedAd();    // Exibe o anúncio recompensado
     }
 
     public void OnInitializationComplete()
@@ -99,13 +103,20 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
 
     private void Naopulavel()
     {
-        Advertisement.Show(naoPulavelId, this); // Exibe o anúncio não pulável
+        if (!isGamePausedByAd)
+        {
+            Time.timeScale = 0; // Pausa o tempo do jogo
+            isGamePausedByAd = true; // Marca que o jogo está pausado por causa do anúncio
+        }
+        Advertisement.Show(naoPulavelId, this); // Exibe o anúncio intersticial
+        isShowingInterstitial = true; // Define que o intersticial está sendo exibido
     }
 
-    void Recompensa()
+    public void Recompensa()
     {
         if (LevelManager.main != null)
         {
+            recompensa = Recompensa;
             LevelManager.main.RewardCurrency(); // Dá a recompensa ao jogador
         }
         else
@@ -126,15 +137,15 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
     }
 
 
-    public void ShowRewardedAd(System.Action actionAfterAd)
+    public void ShowRewardedAd()
     {
         if (!isGamePausedByAd)
         {
             Time.timeScale = 0; // Pausa o tempo do jogo
             isGamePausedByAd = true; // Marca que o jogo está pausado por causa do anúncio
         }
-        adCompletedAction = actionAfterAd; // Armazena a ação que será executada após o anúncio
-        Advertisement.Show(rewardedAdId, this); // Exibe o anúncio recompensado
+          Advertisement.Show(rewardedAdId, this); // Exibe o anúncio recompensado
+
     }
 
 
@@ -144,7 +155,7 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
         {
             if (placementId == rewardedAdId)
             {
-                adCompletedAction?.Invoke(); // Executa a ação armazenada (Recompensa ou Reviver)
+               recompensa();
             }
             else if (placementId == interstitialAdId)
             {
@@ -180,18 +191,13 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
 
     public void Reviver()
     {
-        LevelManager.main.Reiniciar(); // Ação de reviver o jogador
+        recompensa = Reviver;
+       LevelManager.main.Reiniciar(); // Ação de reviver o jogador
     }
 
-    public void BotaoRecompensa()
-    {
-        ShowRewardedAd(Recompensa); // Mostra o anúncio e dá a recompensa
-    }
+    
 
-    public void BotaoReviver()
-    {
-        ShowRewardedAd(Reviver); // Passa o método Reviver para ser executado após o anúncio
-    }
+   
 
     public void ShowNextAd()
     {
@@ -207,4 +213,15 @@ public class AdManager : MonoBehaviour, IUnityAdsInitializationListener, IUnityA
         // Alterna o tipo de anúncio para o próximo
         showInterstitialNext = !showInterstitialNext;
     }
+    public void BotaoRecompensa()
+    {
+        ShowRewardedAdForAction(Recompensa); // Configura o anúncio para executar o método Recompensa
+    }
+
+    public void BotaoReviver()
+    {
+        ShowRewardedAdForAction(Reviver); // Configura o anúncio para executar o método Reviver
+    }
+
+
 }
